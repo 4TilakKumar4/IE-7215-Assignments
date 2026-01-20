@@ -69,7 +69,7 @@ def timer():
 
 # Parameters
 infinity = 1000000
-seed = random.randint(1, 7)
+seed = 1234
 random.seed(seed)
 
 print(f"Random Seed: {seed}")
@@ -100,7 +100,11 @@ for reps in range(0, 100, 1):
     sumS = sumS + area/clock
     sumY = sumY + clock
 
-print(f"\nAverage time to system failure: {sumY/100:.2f} days")
-print(f"Average number of functional components: {sumS/100:.4f}")
+print(f"\nSystem Paramters: ")
 print(f"Components in system: 3 (1 active + 2 spares)")
 print(f"Repair time: 3.5 days")
+print(f"Stop Condition: Total system failure, i.e S=0")
+
+
+print(f"\nAverage time to system failure: {sumY/100:.2f} days")
+print(f"Average number of functional components: {sumS/100:.4f}")
