@@ -12,7 +12,7 @@ def failure():
     global nextRepair
     global queueCount
     
-    s = s - 1
+    s -= 1
     
     # Check if repair is ongoing
     if nextRepair == infinity:
@@ -48,7 +48,7 @@ def repair():
     global nextRepair
     global queueCount
     
-    s = s + 1
+    s += 1
     
     # If system was down (s was 0), schedule new failure
     if s == 1 and nextFailure == infinity:
@@ -56,7 +56,7 @@ def repair():
     
     # Check if more components waiting in queue
     if queueCount > 0:
-        queueCount = queueCount - 1
+        queueCount -= 1
         nextRepair = clock + 3.5  # Calculate new repair time
     else:
         nextRepair = infinity  # No more repairs
@@ -89,7 +89,7 @@ def timer():
 # Parameters
 infinity = 1000000
 maxTime = 1000  # Simulation run length
-seed = random.randint(1, 7)
+seed = 1234
 random.seed(seed)
 
 print("=" * 70)
@@ -169,15 +169,15 @@ print("=" * 70)
 print()
 print("1. PROPORTION OF SYSTEM FAILURE TIME (Time when S=0)")
 print("-" * 70)
-print(f"   Point Estimate: {mean_proportionDown:.6f}")
-print(f"   Standard Deviation: {std_proportionDown:.6f}")
-print(f"   95% Confidence Interval: [{ci_proportionDown[0]:.6f}, {ci_proportionDown[1]:.6f}]")
+print(f"   Point Estimate: {mean_proportionDown:.4f}")
+print(f"   Standard Deviation: {std_proportionDown:.4f}")
+print(f"   95% Confidence Interval: [{ci_proportionDown[0]:.4f}, {ci_proportionDown[1]:.4f}]")
 print()
 print("2. AVERAGE NUMBER OF FUNCTIONAL COMPONENTS")
 print("-" * 70)
-print(f"   Point Estimate: {mean_avgComponents:.6f}")
-print(f"   Standard Deviation: {std_avgComponents:.6f}")
-print(f"   95% Confidence Interval: [{ci_avgComponents[0]:.6f}, {ci_avgComponents[1]:.6f}]")
+print(f"   Point Estimate: {mean_avgComponents:.4f}")
+print(f"   Standard Deviation: {std_avgComponents:.4f}")
+print(f"   95% Confidence Interval: [{ci_avgComponents[0]:.4f}, {ci_avgComponents[1]:.4f}]")
 print()
 print("=" * 70)
 print("INTERPRETATION:")
