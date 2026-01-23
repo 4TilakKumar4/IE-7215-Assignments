@@ -1,5 +1,6 @@
 import random
 import math
+import numpy as np
 
 def failure():
     global s
@@ -72,14 +73,22 @@ infinity = 1000000
 seed = 1234
 random.seed(seed)
 
-print(f"Random Seed: {seed}")
-print("Running 100 replications...")
+print()
+print("PROBLEM 3.a: MODIFIED TTF SYSTEM (3 Components)")
+print()
+print(f"Configuration:")
+print(f"  - Components: 3 (1 active + 2 spares)")
+print(f"  - Repair Time: 3.5 days")
+print(f"  - Component Lifetime: Discrete Uniform[1, 6] days")
+print(f"  - Stop Condition: First system failure (S=0)")
+print(f"  - Replications: 100")
+print(f"  - Random Seed: {seed}")
+print()
 
-# Run 100 replications
-sumS = 0
-sumY = 0
+y = []
+sBar = []
 
-for reps in range(0, 100, 1):
+for reps in range(100):
     nextFailure = math.ceil(6*random.random())
     nextRepair = infinity
     queueCount = 0
@@ -97,14 +106,36 @@ for reps in range(0, 100, 1):
         else:
             repair()
     
-    sumS = sumS + area/clock
-    sumY = sumY + clock
+    y.append(clock)
+    sBar.append(area/clock)
 
-print(f"\nSystem Paramters: ")
-print(f"Components in system: 3 (1 active + 2 spares)")
-print(f"Repair time: 3.5 days")
-print(f"Stop Condition: Total system failure, i.e S=0")
+mean_Y = np.mean(y)
+std_Y= np.std(y, ddof=1)
+ci_Y=[
+    mean_Y - 1.96 * std_Y/math.sqrt(100),
+    mean_Y + 1.96 * std_Y/math.sqrt(100)
+]
+mean_S = np.mean(sBar)
+std_S = np.std(sBar, ddof=1)
+ci_S = [
+    mean_S - 1.96 * std_S / math.sqrt(100),
+    mean_S + 1.96 * std_S / math.sqrt(100)
+]
 
-
-print(f"\nAverage time to system failure: {sumY/100:.2f} days")
-print(f"Average number of functional components: {sumS/100:.4f}")
+# Results
+print()
+print("SIMULATION RESULTS (100 Replications)")
+print()
+print()
+print("1. EXPECTED TIME TO SYSTEM FAILURE")
+print()
+print(f"   Point Estimate: {mean_Y:.4f} days")
+print(f"   Std Deviation: {std_Y:.4f}")
+print(f"   95% CI: [{ci_Y[0]:.4f}, {ci_Y[1]:.4f}]")
+print()
+print("2. AVERAGE NUMBER OF FUNCTIONAL COMPONENTS")
+print()
+print(f"   Point Estimate: {mean_S:.4f}")
+print(f"   Std Deviation: {std_S:.4f}")
+print(f"   95% CI: [{ci_S[0]:.4f}, {ci_S[1]:.4f}]")
+print()

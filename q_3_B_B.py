@@ -20,7 +20,7 @@ def failure():
         repairTime=1.25
     else:
         repairTime=2.75
-        
+
     if nextRepair == infinity:
         nextRepair = clock + repairTime
     else:
@@ -97,25 +97,22 @@ maxTime = 1000
 seed = 1234
 random.seed(seed)
 
-print("=" * 70)
-print("MODIFIED TTF SYSTEM SIMULATION - 1000 TIME UNITS")
-print("=" * 70)
+print()
+print("PROBLEM 3.b.b: MODIFIED TTF SYSTEM SIMULATION - 1000 TIME UNITS & REPAIR TIME ~ UNIFORM{1.25,2.75}")
+print()
 print(f"Configuration:")
 print(f"  - Components: 3 (1 active + 2 spares)")
-print(f"  - Repair Time: 3.5 days")
+print(f"  - Repair Time: X = 1.25 +1(0.5<R)(2.75-1.25) days, where R~uniform(0,1)")
 print(f"  - Component Lifetime: Discrete Uniform[1, 6] days")
 print(f"  - Simulation Length: {maxTime} time units")
 print(f"  - Number of Replications: 100")
 print(f"  - Random Seed: {seed}")
-print("=" * 70)
 print()
-
 
 proportionDown = []  
 avgComponents = []   
 
-
-for reps in range(0, 100, 1):
+for reps in range(100):
     nextFailure = math.ceil(6*random.random())
     nextRepair = infinity
     queueCount = 0
@@ -163,27 +160,27 @@ ci_avgComponents = [
     mean_avgComponents + 1.96 * std_avgComponents / math.sqrt(100)
 ]
 
-# Display results
+# Results
 print("SIMULATION RESULTS (100 Replications)")
-print("=" * 70)
+print()
 print()
 print("1. PROPORTION OF SYSTEM FAILURE TIME (Time when S=0)")
-print("-" * 70)
+print()
 print(f"   Point Estimate: {mean_proportionDown:.4f}")
 print(f"   Standard Deviation: {std_proportionDown:.4f}")
 print(f"   95% Confidence Interval: [{ci_proportionDown[0]:.4f}, {ci_proportionDown[1]:.4f}]")
 print()
 print("2. AVERAGE NUMBER OF FUNCTIONAL COMPONENTS")
-print("-" * 70)
+print()
 print(f"   Point Estimate: {mean_avgComponents:.4f}")
 print(f"   Standard Deviation: {std_avgComponents:.4f}")
 print(f"   95% Confidence Interval: [{ci_avgComponents[0]:.4f}, {ci_avgComponents[1]:.4f}]")
 print()
-print("=" * 70)
+print()
 print("INTERPRETATION:")
-print("-" * 70)
+print()
 print(f"• The system is down (S=0) approximately {mean_proportionDown*100:.2f}% of the time")
 print(f"• On average, there are {mean_avgComponents:.2f} functional components available")
 print(f"• With 95% confidence, the true proportion of downtime is between")
 print(f"  {ci_proportionDown[0]*100:.2f}% and {ci_proportionDown[1]*100:.2f}%")
-print("=" * 70)
+print()
