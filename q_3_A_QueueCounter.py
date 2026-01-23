@@ -13,15 +13,15 @@ def failure():
     
     s = s - 1
     
-    ### Check if repair is ongoing
+    # Check if repair is ongoing
     if nextRepair == infinity:
-        ### No repair ongoing, start immediately
+        # No repair ongoing, start immediately
         nextRepair = clock + 3.5
     else:
-        ### Repair ongoing, add to queue count
+        # Repair ongoing, add to queue count
         queueCount += 1
     
-    ### Generate next failure if components still available
+    # Generate next failure if components still available
     if s > 0:
         nextFailure = clock + math.ceil(6*random.random())
     else:
@@ -42,7 +42,7 @@ def repair():
     
     s = s + 1
     
-    ### Check if more components waiting in queue
+    # Check if more components waiting in queue
     if queueCount > 0:
         queueCount -= 1
         nextRepair = clock + 3.5 # Calculate new repair time

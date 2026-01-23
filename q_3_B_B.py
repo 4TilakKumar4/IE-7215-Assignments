@@ -112,6 +112,7 @@ print()
 proportionDown = []  
 avgComponents = []   
 
+
 for reps in range(100):
     nextFailure = math.ceil(6*random.random())
     nextRepair = infinity
