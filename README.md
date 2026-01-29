@@ -9,3 +9,9 @@
 
 ### Q 3.b.b
  <img width="737" height="466" alt="Pasted image 20260123102250" src="https://github.com/user-attachments/assets/c24d59d8-9f11-4e77-86d4-4ab4b567697c" />
+
+---
+
+## Lab 1 - Plot
+### Number of pateients in the system - L(t)
+  <img width="8047" height="4618" alt="sample_path_high_res" src="https://github.com/user-attachments/assets/2c412320-a6ab-4041-9e5c-f9464d68e0c2" />
