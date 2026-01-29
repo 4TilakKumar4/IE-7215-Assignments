@@ -11,27 +11,28 @@ def failure():
     global nextFailure
     global nextRepair
     global queueCount
+    global repairTime
     
-    s = s - 1
+    s -= 1
     
-    # Check if repair is ongoing
-    if nextRepair == infinity:
-        # No repair ongoing, start immediately
-        nextRepair = clock + 3.5
+    r=random.random()
+    if r<0.5:
+        repairTime=1.25
     else:
-        # Repair ongoing, add to queue count
+        repairTime=2.75
+
+    if nextRepair == infinity:
+        nextRepair = clock + repairTime
+    else:
         queueCount += 1
     
-    # Generate next failure if components still available
     if s > 0:
         nextFailure = clock + math.ceil(6*random.random())
     else:
-        nextFailure = infinity  # No active component, can't fail
-    
-    # Update statistics
+        nextFailure = infinity  
+
     area = area + sLast * (clock - tLast)
-    
-    # Track downtime (when s = 0)
+
     if sLast == 0:
         downTime = downTime + (clock - tLast)
     
@@ -47,24 +48,28 @@ def repair():
     global nextFailure
     global nextRepair
     global queueCount
+    global repairTime
+
+    s += 1
     
-    s = s + 1
+    r=random.random()
+    if r<0.5:
+        repairTime=1.25
+    else:
+        repairTime=2.75
     
-    # If system was down (s was 0), schedule new failure
     if s == 1 and nextFailure == infinity:
         nextFailure = clock + math.ceil(6*random.random())
     
     # Check if more components waiting in queue
     if queueCount > 0:
-        queueCount = queueCount - 1
-        nextRepair = clock + 3.5  # Calculate new repair time
+        queueCount -= 1
+        nextRepair = clock + repairTime  
     else:
         nextRepair = infinity  # No more repairs
     
-    # Update statistics
     area = area + sLast * (clock - tLast)
     
-    # Track downtime (when s = 0)
     if sLast == 0:
         downTime = downTime + (clock - tLast)
     
@@ -88,29 +93,27 @@ def timer():
 
 # Parameters
 infinity = 1000000
-maxTime = 1000  # Simulation run length
-seed = random.randint(1, 7)
+maxTime = 1000
+seed = 1234
 random.seed(seed)
 
-print("=" * 70)
-print("MODIFIED TTF SYSTEM SIMULATION - 1000 TIME UNITS")
-print("=" * 70)
+print()
+print("PROBLEM 3.b.b: MODIFIED TTF SYSTEM SIMULATION - 1000 TIME UNITS & REPAIR TIME ~ UNIFORM{1.25,2.75}")
+print()
 print(f"Configuration:")
 print(f"  - Components: 3 (1 active + 2 spares)")
-print(f"  - Repair Time: 3.5 days")
+print(f"  - Repair Time: X = 1.25 +1(0.5<R)(2.75-1.25) days, where R~uniform(0,1)")
 print(f"  - Component Lifetime: Discrete Uniform[1, 6] days")
 print(f"  - Simulation Length: {maxTime} time units")
 print(f"  - Number of Replications: 100")
 print(f"  - Random Seed: {seed}")
-print("=" * 70)
 print()
 
-# Lists to store results from each replication
-proportionDown = []  # Proportion of time system is down (S=0)
-avgComponents = []   # Average number of functional components
+proportionDown = []  
+avgComponents = []   
 
-# Run 100 replications
-for reps in range(0, 100, 1):
+
+for reps in range(100):
     nextFailure = math.ceil(6*random.random())
     nextRepair = infinity
     queueCount = 0
@@ -120,24 +123,19 @@ for reps in range(0, 100, 1):
     clock = 0.0
     tLast = 0.0
     area = 0.0
-    downTime = 0.0  # Track time when S=0
+    downTime = 0.0  
     
-    while clock < maxTime:
-        # Check if next event is beyond maxTime
+    while clock < maxTime:       
         nextEventTime = min(nextFailure, nextRepair)
-        
-        if nextEventTime >= maxTime:
-            # Update statistics to maxTime and stop
+
+        if nextEventTime >= maxTime:  
             area = area + sLast * (maxTime - tLast)
-            
-            # Track downtime if system is down
+    
             if sLast == 0:
                 downTime = downTime + (maxTime - tLast)
-            
             clock = maxTime
             break
-        
-        # Process next event
+
         nextEvent = timer()
         if nextEvent == "Failure":
             failure()
@@ -150,7 +148,7 @@ for reps in range(0, 100, 1):
 
 # Calculate statistics across replications
 mean_proportionDown = np.mean(proportionDown)
-std_proportionDown = np.std(proportionDown, ddof=1)  # Sample std deviation
+std_proportionDown = np.std(proportionDown, ddof=1)  
 ci_proportionDown = [
     mean_proportionDown - 1.96 * std_proportionDown / math.sqrt(100),
     mean_proportionDown + 1.96 * std_proportionDown / math.sqrt(100)
@@ -163,27 +161,27 @@ ci_avgComponents = [
     mean_avgComponents + 1.96 * std_avgComponents / math.sqrt(100)
 ]
 
-# Display results
+# Results
 print("SIMULATION RESULTS (100 Replications)")
-print("=" * 70)
+print()
 print()
 print("1. PROPORTION OF SYSTEM FAILURE TIME (Time when S=0)")
-print("-" * 70)
-print(f"   Point Estimate: {mean_proportionDown:.6f}")
-print(f"   Standard Deviation: {std_proportionDown:.6f}")
-print(f"   95% Confidence Interval: [{ci_proportionDown[0]:.6f}, {ci_proportionDown[1]:.6f}]")
+print()
+print(f"   Point Estimate: {mean_proportionDown:.4f}")
+print(f"   Standard Deviation: {std_proportionDown:.4f}")
+print(f"   95% Confidence Interval: [{ci_proportionDown[0]:.4f}, {ci_proportionDown[1]:.4f}]")
 print()
 print("2. AVERAGE NUMBER OF FUNCTIONAL COMPONENTS")
-print("-" * 70)
-print(f"   Point Estimate: {mean_avgComponents:.6f}")
-print(f"   Standard Deviation: {std_avgComponents:.6f}")
-print(f"   95% Confidence Interval: [{ci_avgComponents[0]:.6f}, {ci_avgComponents[1]:.6f}]")
 print()
-print("=" * 70)
+print(f"   Point Estimate: {mean_avgComponents:.4f}")
+print(f"   Standard Deviation: {std_avgComponents:.4f}")
+print(f"   95% Confidence Interval: [{ci_avgComponents[0]:.4f}, {ci_avgComponents[1]:.4f}]")
+print()
+print()
 print("INTERPRETATION:")
-print("-" * 70)
+print()
 print(f"• The system is down (S=0) approximately {mean_proportionDown*100:.2f}% of the time")
 print(f"• On average, there are {mean_avgComponents:.2f} functional components available")
 print(f"• With 95% confidence, the true proportion of downtime is between")
 print(f"  {ci_proportionDown[0]*100:.2f}% and {ci_proportionDown[1]*100:.2f}%")
-print("=" * 70)
+print()
