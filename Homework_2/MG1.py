@@ -1,4 +1,5 @@
 
+
 import SimFunctions
 import SimRNG 
 import SimClasses
@@ -51,6 +52,7 @@ def EndOfService():
         SimFunctions.Schedule(Calendar,"EndOfService",SimRNG.Erlang(Phases,MeanST,2))
     else:
         Server.Free(1)
+    
 
 for reps in range(0,10,1):
 
@@ -87,7 +89,7 @@ for reps in range(0,10,1):
 
 output = {"AllWaitMean" : AllWaitMean, "AllQueueMean": AllQueueMean, "AllQueueNum" : AllQueueNum, "AllServerMean": AllServerMean}
 output = pandas.DataFrame(output)
-output.to_csv("MG1_output.csv", sep=",")
+output.to_csv("MEr7_output.csv", sep=",")
 
 # some optional code that shows how to save all the data
 # and do analysis with the pandas module
