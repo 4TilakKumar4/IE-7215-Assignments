@@ -1,3 +1,17 @@
+"""
+Problem 3 Part 1: M/M/1 Queue Steady-State Analysis
+
+Model Configuration:
+- Single server queue (M/M/1)
+- Arrival rate (λ): 1 customer per minute (Exponential interarrival)
+- Service rate (μ): 1.5 customers per minute (Exponential service)
+- Utilization (ρ): λ/μ = 1/1.5 = 0.667
+
+Simulation Configuration:
+- Run length: 55,000 minutes
+- Warmup period: 5,000 minutes (observations removed)
+- Replications: 5, 30, 100 (comparing CI width)
+"""
 
 
 import SimFunctions

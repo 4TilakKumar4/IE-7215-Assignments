@@ -1,3 +1,20 @@
+"""
+Problem 3 Part 3: M/M/1 Queue with Different Utilization Levels
+
+Model Configuration:
+- Single server queue (M/M/1)
+- Arrival rate (λ): 1 customer per minute (fixed)
+- Service rate (μ): Varies to achieve target utilization
+  - ρ = 0.3: μ = 3.33/min, MeanST = 0.3 min
+  - ρ = 0.5: μ = 2.0/min,  MeanST = 0.5 min
+  - ρ = 0.9: μ = 1.11/min, MeanST = 0.9 min
+
+Simulation Configuration:
+- Start from empty system (no warmup)
+- Stop after 500 customers complete service
+- Replications: 100 per utilization level
+"""
+
 import SimFunctions
 import SimRNG 
 import SimClasses
