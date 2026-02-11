@@ -9,8 +9,8 @@ System Configuration:
 - Arrival rate: 60 calls/hour = 1 call/min (Poisson process)
 - Operating hours: 8am-4pm (480 minutes)
 """
-import sys
-sys.path.append('Libraries')
+
+
 import SimFunctions
 import SimRNG 
 import SimClasses

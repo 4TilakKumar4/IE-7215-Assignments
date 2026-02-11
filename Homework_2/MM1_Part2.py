@@ -1,3 +1,19 @@
+"""
+Problem 3 Part 2: M/M/1 Queue Transient Analysis
+
+Model Configuration:
+- Single server queue (M/M/1)
+- Arrival rate (λ): 1 customer per minute (Exponential interarrival)
+- Service rate (μ): 1.5 customers per minute (Exponential service)
+- Utilization (ρ): λ/μ = 1/1.5 = 0.667
+
+Simulation Configuration:
+- Start from empty system (no warmup)
+- Stop after 500 customers complete service
+- Replications: 100
+"""
+
+
 import SimFunctions
 import SimRNG 
 import SimClasses
