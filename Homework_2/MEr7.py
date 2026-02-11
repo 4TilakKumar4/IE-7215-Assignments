@@ -9,7 +9,8 @@ System Configuration:
 - Arrival rate: 60 calls/hour = 1 call/min (Poisson process)
 - Operating hours: 8am-4pm (480 minutes)
 """
-
+import sys
+sys.path.append('Libraries')
 import SimFunctions
 import SimRNG 
 import SimClasses
@@ -158,3 +159,5 @@ AllWaitMean = pandas.DataFrame(AllWaitMean)
 print("\nScenario 1 Results:")
 print("Mean Wait:", AllWaitMean.mean()[0])
 print("Std Wait:", AllWaitMean.std()[0])
+ci_hw = 1.96 * AllWaitMean.std()[0] / np.sqrt(100)
+print("95% CI: [", AllWaitMean.mean()[0] - ci_hw, ",", AllWaitMean.mean()[0] + ci_hw, "]")

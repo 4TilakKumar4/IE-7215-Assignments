@@ -33,8 +33,7 @@ TheDTStats.append(Wait)
 TheQueues.append(Queue)
 TheResources.append(Servers)
 
-NumberAgents = 8 
-Servers.SetUnits(NumberAgents)
+NumberAgents = 5 
 PhasesFinancial = 2
 PhasesContact = 3
 MeanTBA = 1.0
@@ -42,6 +41,7 @@ MeanST = 5.0 * 1.05
 FinancialProb = 0.59
 RunLength = 480.0
 WarmUp = 0.0
+AvgWaitScenario1 = 1.68
 
 AllWaitMean = []
 AllQueueMean = []
@@ -89,41 +89,62 @@ def EndOfService():
     else:
         Servers.Free(1)
 
+while True:
+    Servers.SetUnits(NumberAgents)
 
-for reps in range(0, 100, 1):
+    AllWaitMean = []
+    AllQueueMean = []
+    AllQueueNum = []
+    AllServerMean = []
     
-    SimFunctions.SimFunctionsInit(Calendar, TheQueues, TheCTStats, TheDTStats, TheResources)
-    SimFunctions.Schedule(Calendar, "Arrival", SimRNG.Expon(MeanTBA, 1))
-    SimFunctions.Schedule(Calendar, "EndSimulation", RunLength)
-    
-    NextEvent = Calendar.Remove()
-    SimClasses.Clock = NextEvent.EventTime
-    if NextEvent.EventType == "Arrival":
-        Arrival()
-    elif NextEvent.EventType == "EndOfService":
-        EndOfService()
-    
-    while NextEvent.EventType != "EndSimulation":
+    print("Testing with", NumberAgents, "agents")
+    print("Rep", "Average Wait", "Average Number in Queue", "Number Remaining in Queue", "Server Utilization")
+    for reps in range(0, 100, 1):
+        
+        SimFunctions.SimFunctionsInit(Calendar, TheQueues, TheCTStats, TheDTStats, TheResources)
+        SimFunctions.Schedule(Calendar, "Arrival", SimRNG.Expon(MeanTBA, 1))
+        SimFunctions.Schedule(Calendar, "EndSimulation", RunLength)
+        
         NextEvent = Calendar.Remove()
         SimClasses.Clock = NextEvent.EventTime
         if NextEvent.EventType == "Arrival":
             Arrival()
         elif NextEvent.EventType == "EndOfService":
             EndOfService()
-    
-    AllWaitMean.append(Wait.Mean())
-    AllQueueMean.append(Queue.Mean())
-    AllQueueNum.append(Queue.NumQueue())
-    AllServerMean.append(Servers.Mean() / NumberAgents)
-    
-    print(reps+1, Wait.Mean(), Queue.Mean(), Queue.NumQueue(), Servers.Mean()/NumberAgents)
+        
+        while NextEvent.EventType != "EndSimulation":
+            NextEvent = Calendar.Remove()
+            SimClasses.Clock = NextEvent.EventTime
+            if NextEvent.EventType == "Arrival":
+                Arrival()
+            elif NextEvent.EventType == "EndOfService":
+                EndOfService()
+        
+        AllWaitMean.append(Wait.Mean())
+        AllQueueMean.append(Queue.Mean())
+        AllQueueNum.append(Queue.NumQueue())
+        AllServerMean.append(Servers.Mean() / NumberAgents)
+        
+        print(reps+1, Wait.Mean(), Queue.Mean(), Queue.NumQueue(), Servers.Mean()/NumberAgents)
 
-output = {"SlNo": list(range(1, 101)), "AllWaitMean": AllWaitMean, "AllQueueMean": AllQueueMean, "AllQueueNum": AllQueueNum, "AllServerMean": AllServerMean}
-output = pandas.DataFrame(output)
-output.to_csv("Scenario2_output.csv", sep=",")
-
-print("\nScenario 2 Results:")
-print("Mean Wait:", AllWaitMean.mean()[0])
-print("Std Wait:", AllWaitMean.std()[0])
-ci_hw = 1.96 * AllWaitMean.std()[0] / np.sqrt(100)
-print("95% CI: [", AllWaitMean.mean()[0] - ci_hw, ",", AllWaitMean.mean()[0] + ci_hw, "]")
+    AllWaitMean_df = pandas.DataFrame(AllWaitMean)
+    MeanWait = AllWaitMean_df.mean()[0]
+    StdWait = AllWaitMean_df.std()[0]
+    ci_HalfWidth = 1.96 * StdWait / np.sqrt(100)
+    
+    print("\nResults with", NumberAgents, "agents:")
+    print("Mean Wait:", MeanWait)
+    print("Std Wait:", StdWait)
+    print("95% CI: [", MeanWait - ci_HalfWidth, ",", MeanWait + ci_HalfWidth, "]")
+    print("Scenario 1 Mean Wait:", AvgWaitScenario1)
+    print()
+    
+    if MeanWait <= AvgWaitScenario1:
+        print("*** Found optimal number of agents:", NumberAgents, "***")
+        output = {"SlNo": list(range(1, 101)), "AllWaitMean": AllWaitMean, "AllQueueMean": AllQueueMean, "AllQueueNum": AllQueueNum, "AllServerMean": AllServerMean}
+        output = pandas.DataFrame(output)
+        output.to_csv("Scenario2_output.csv", sep=",")
+        break
+    else:
+        print("Mean wait", MeanWait, ">", AvgWaitScenario1, "- increasing agents")
+        NumberAgents += 1
