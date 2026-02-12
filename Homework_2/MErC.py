@@ -137,6 +137,7 @@ while True:
     print("Std Wait:", StdWait)
     print("95% CI: [", MeanWait - ci_HalfWidth, ",", MeanWait + ci_HalfWidth, "]")
     print("Scenario 1 Mean Wait:", AvgWaitScenario1)
+    print("Utilization:", np.mean(AllServerMean))
     print()
     
     if MeanWait <= AvgWaitScenario1:

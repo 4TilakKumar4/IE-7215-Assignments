@@ -134,6 +134,8 @@ System Configuration:
 |        6         |      3.03       |   [2.71, 3.36]   |  Unacceptable  |
 |      **7**       |    **0.88**     | **[0.77, 0.98]** | **Acceptable** |
 
+Utilization for 7 Agents is **74.8%**
+
 ##### Conclusions 
 1. **7 cross-trained agent**s are needed to match or exceed the current service level. With fewer agents (5 or 6), wait times are significantly higher than the current system. 
 2. With 7 cross-trained agents, the mean wait time drops from 1.68 minutes to 0.88 minutes, which is a **48% reduction** in customer wait time.
