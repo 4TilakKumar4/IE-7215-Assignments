@@ -90,7 +90,7 @@ Simulation Configuration:
 | 0.9 |      4.39 min      |     9.10 min      |       9.09 min        |
 
 <img width="2100" height="900" alt="MM1_Part3_Comparison_CI" src="https://github.com/user-attachments/assets/28e7c09c-f0f5-4412-8bc7-aa7b5a2e37cc" />
-*Figure 2.3.3: Comparison of Expected Wait Times for Different Utilization Levels*
+Figure 2.3.3: Comparison of Expected Wait Times for Different Utilization Levels
 
 ##### Conclusions 
 1. Wait times increase nonlinearly with utilization - Wait times for ρ= 0.9 is ~20x longer than ρ= 0.3. 
