@@ -1,13 +1,13 @@
 # IE 7215 Assignments
 
 # Homework 1 - Outupts
-### Q 3.a.
+### Problem 3.a.
 <img width="466" height="362" alt="Pasted image 20260123101658" src="https://github.com/user-attachments/assets/2d83272b-04ea-4309-aded-20e9d101c86b" />
 
-### Q 3.b.a.
+### Problem 3.b.a.
 <img width="577" height="459" alt="Pasted image 20260123102020" src="https://github.com/user-attachments/assets/f8da3821-23ed-42ba-b518-9f5ae1f4e009" />
 
-### Q 3.b.b
+### Problem 3.b.b.
  <img width="737" height="466" alt="Pasted image 20260123102250" src="https://github.com/user-attachments/assets/c24d59d8-9f11-4e77-86d4-4ab4b567697c" />
 
 ---
@@ -21,7 +21,7 @@
 # Homework 2 - Results
 
 ## Problem 3 - M/M/1 Queue
-### Part1 - Steady State Analysis 
+### Part 1 - Steady State Analysis 
 
 #### Configuration  
 Model Configuration:
@@ -60,10 +60,10 @@ Simulation Configuration:
 
 #### Results
 <img width="1800" height="1200" alt="MM1_Part2_Transient" src="https://github.com/user-attachments/assets/90891984-9ace-4a07-b984-d0f7fcf5a2a5" />
-*Figure 2.3.1: Expected and Standard Deviation of Wait Times in System* 
+Figure 2.3.1: Expected and Standard Deviation of Wait Times in System
 
 <img width="2100" height="900" alt="MM1_Part2_CI" src="https://github.com/user-attachments/assets/7f01444a-3b1a-4789-865c-236a1b006887" />
-*Figure 2.3.2: Expected Wait Time with 95% confidence band*
+Figure 2.3.2: Expected Wait Time with 95% confidence band
 
 The transient plots clearly show the effect of warmup on the wait times. Early customer experience shorter wait times because the system starts empty. As the queue builds up, wait times increase until steady state is reached around 100-150th customer in this case. The confidence band widens initially and then stabilizes. 
 
