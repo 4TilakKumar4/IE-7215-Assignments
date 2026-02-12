@@ -22,6 +22,7 @@
 
 ## Problem 3 - M/M/1 Queue
 ### Part1 - Steady State Analysis 
+
 #### Configuration  
 Model Configuration:
 - Single server queue (M/M/1)
@@ -40,9 +41,11 @@ Simulation Configuration:
 |    5    |  2.0207  | 0.0388  |  1.9867  |  2.0547  |
 |   30    |  2.0043  | 0.0432  |  1.9888  |  2.0197  |
 |   100   |  1.9979  | 0.0450  |  1.9891  |  2.0067  |
+
 The mean wait time convergence at 2 minutes across all replication counts which aligns with the theoretical W value.  The main observation is that the CI width decreases as replications increase, showing that estimation accuracy improves.
 
 ### Part 2 - Transient Anlaysis
+
 #### Configuration 
 Model Configuration:
 - Single server queue (M/M/1)
@@ -54,11 +57,13 @@ Simulation Configuration:
 - Start from empty system (no warmup)
 - Stop after 500 customers complete service
 - Replications: 100
+
 #### Results
-![[MM1_Part2_Transient.png]]
-*Figure 1: Expected and Standard Deviation of Wait Times in System* 
-![[MM1_Part2_CI.png]]
-*Figure 2: Expected Wait Time with 95% confidence band*
+<img width="1800" height="1200" alt="MM1_Part2_Transient" src="https://github.com/user-attachments/assets/90891984-9ace-4a07-b984-d0f7fcf5a2a5" />
+*Figure 2.3.1: Expected and Standard Deviation of Wait Times in System* 
+
+<img width="2100" height="900" alt="MM1_Part2_CI" src="https://github.com/user-attachments/assets/7f01444a-3b1a-4789-865c-236a1b006887" />
+*Figure 2.3.2: Expected Wait Time with 95% confidence band*
 
 The transient plots clearly show the effect of warmup on the wait times. Early customer experience shorter wait times because the system starts empty. As the queue builds up, wait times increase until steady state is reached around 100-150th customer in this case. The confidence band widens initially and then stabilizes. 
 
@@ -76,14 +81,16 @@ Simulation Configuration:
 - Start from empty system (no warmup)
 - Stop after 500 customers complete service
 - Replications: 100 per utilization level
+
 #### Results
 |  ρ  | First 50 Customers | Last 50 Customers | Steady-State Estimate |
 |:---:|:------------------:|:-----------------:|:---------------------:|
 | 0.3 |      0.42 min      |     0.43 min      |       0.44 min        |
 | 0.5 |      1.02 min      |     1.03 min      |       1.03 min        |
 | 0.9 |      4.39 min      |     9.10 min      |       9.09 min        |
-![[MM1_Part3_Comparison_CI.png]]
-*Figure 3: Comparison of Expected Wait Times for Different Utilization Levels*
+
+<img width="2100" height="900" alt="MM1_Part3_Comparison_CI" src="https://github.com/user-attachments/assets/28e7c09c-f0f5-4412-8bc7-aa7b5a2e37cc" />
+*Figure 2.3.3: Comparison of Expected Wait Times for Different Utilization Levels*
 
 ##### Conclusions 
 1. Wait times increase nonlinearly with utilization - Wait times for ρ= 0.9 is ~20x longer than ρ= 0.3. 
@@ -99,6 +106,7 @@ System Configuration:
 - Two separate queues
 - Arrival rate: 60 calls/hour = 1 call/min (Poisson process)
 - Operating hours: 8am-4pm (480 minutes)
+
 #### Results 
 | Metric               | Financial Queue | Contact Queue |     Combined     |
 | -------------------- |:---------------:|:-------------:|:----------------:|
@@ -125,12 +133,14 @@ System Configuration:
 |        5         |      19.09      |  [17.07, 21.11]  |  Unacceptable  |
 |        6         |      3.03       |   [2.71, 3.36]   |  Unacceptable  |
 |      **7**       |    **0.88**     | **[0.77, 0.98]** | **Acceptable** |
+
 ##### Conclusions 
 1. **7 cross-trained agent**s are needed to match or exceed the current service level. With fewer agents (5 or 6), wait times are significantly higher than the current system. 
 2. With 7 cross-trained agents, the mean wait time drops from 1.68 minutes to 0.88 minutes, which is a **48% reduction** in customer wait time.
 3. Though the there is no reduction in labour, the cross trained system outperforms the current specialized system with the same total headcount. This is due to the pooling effect - in the specialized system, idle agents in one queue cannot help customers waiting in another queue. 
 4. The 5% increase in service time is more than offset by the efficiency gains from pooling resources into one single queue.
-##### Resources
+
+### Recommendation
 Implement cross-training with **7 agents**. Benefits include:
 - **Same labor cost** (7 agents in both systems)
 - **48% reduction** in mean wait time (1.68 → 0.88 min)
