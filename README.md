@@ -148,3 +148,52 @@ Implement cross-training with **7 agents**. Benefits include:
 - **48% reduction** in mean wait time (1.68 → 0.88 min)
 - **Improved flexibility** for handling demand fluctuations
 - **Better customer experience** with shorter hold times
+
+  ---
+
+# Homework 3 - Results
+
+## Problem 2 - AR(1) Surrogate Model for M/M/1 Waiting Times
+
+### Configuration
+Model Configuration:
+- Single server queue (M/M/1)
+- Arrival rate ($\lambda$): 1 customer per minute
+- Service rate ($\mu$): Varies to achieve target utilization
+  - $\rho = 0.3$: MeanST = 0.3 min
+  - $\rho = 0.5$: MeanST = 0.5 min
+  - $\rho = 0.9$: MeanST = 0.9 min
+
+Simulation Configuration:
+- Warmup: 500 customers (discarded)
+- Run length: 100 steady-state observations per replication
+- Replications: 100 per utilization level
+- Parameters estimated via moment matching: $\hat{\mu} = \bar{Y}$, $\hat{\phi} = c(1)/c(0)$, $\hat{\sigma}^2 = c(0)(1 - \hat{\phi}^2)$
+
+### Part 1 - AR(1) Coefficient Estimates
+
+| $\rho$ | $E[W]$ Theory | $\hat{\mu}$ (± SD) | $\hat{\phi}$ (± SD) | $\hat{\sigma}^2$ (± SD) |
+|:------:|:-------------:|:------------------:|:-------------------:|:-----------------------:|
+| 0.3 | 0.4286 | 0.4173 (±0.0713) | 0.4189 (±0.1663) | 0.1246 (±0.0344) |
+| 0.5 | 1.0000 | 0.9791 (±0.2442) | 0.6365 (±0.1454) | 0.4057 (±0.1215) |
+| 0.9 | 9.0000 | 9.7266 (±8.9985) | 0.9017 (±0.0653) | 1.9788 (±1.0298) |
+
+<img width="1500" height="900" alt="MM1_Part2_PhiComparison" src="https://github.com/user-attachments/assets/abe817bd-81c1-49fa-9106-48817456ef28" />
+<img width="1200" height="750" alt="MM1_Part2_rho0 3_Phi" src="https://github.com/user-attachments/assets/6ad31b13-570a-4736-a20c-839239a6cf52" />
+<img width="1200" height="750" alt="MM1_Part2_rho0 5_Phi" src="https://github.com/user-attachments/assets/f71abe17-8626-4a53-ab7e-aac3ec907a88" />
+<img width="1200" height="750" alt="MM1_Part2_rho0 9_Phi" src="https://github.com/user-attachments/assets/45ef2d2d-08dd-404e-818c-024e99941b06" />
+
+
+### Part 2 - One-Step Forward Prediction
+
+| $\rho$ | Mean Error | RMSE | MAE | RMSE / $\bar{Y}$ |
+|:------:|:----------:|:----:|:---:|:----------------:|
+| 0.3 | −0.0006 | 0.3630 | 0.2681 | 87% |
+| 0.5 | −0.0004 | 0.6549 | 0.4909 | 67% |
+| 0.9 | ≈ 0.000 | 1.5448 | 1.1639 | 16% |
+
+##### Conclusions
+1. $\hat{\phi}$ increases monotonically with $\rho$ ($0.42 \to 0.64 \to 0.90$) — higher utilization produces stronger serial correlation as congestion carries forward between customers.
+2. $\hat{\mu}$ is accurate at $\rho = 0.3$ and $0.5$ (< 3% bias) but highly variable at $\rho = 0.9$ (SD = 8.99) — a run length of 100 is insufficient to estimate the mean at high load.
+3. Mean prediction error $\approx 0$ at all levels, confirming the AR(1) moment-matching estimator produces unbiased one-step forecasts.
+4. Relative prediction error (RMSE / $\bar{Y}$) shrinks from 87% to 16% as $\rho$ increases — the AR(1) explains a larger fraction of variation at high utilization because $\hat{\phi} \approx 1$.
