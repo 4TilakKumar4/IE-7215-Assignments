@@ -11,9 +11,9 @@ System Configuration:
 """
 
 
-import SimFunctions
-import SimRNG 
-import SimClasses
+import sim_engine.SimFunctions as SimFunctions
+import sim_engine.SimRNG as SimRNG 
+from sim_engine import SimClasses
 import pandas
 import numpy as np
 

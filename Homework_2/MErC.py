@@ -11,9 +11,9 @@ System Configuration:
 - Operating hours: 8am-4pm (480 minutes)
 """
 
-import SimFunctions
-import SimRNG 
-import SimClasses
+import sim_engine.SimFunctions as SimFunctions
+import sim_engine.SimRNG as SimRNG 
+import sim_engine.SimClasses as SimClasses
 import pandas
 import numpy as np
 
