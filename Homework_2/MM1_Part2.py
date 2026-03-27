@@ -14,9 +14,9 @@ Simulation Configuration:
 """
 
 
-import SimFunctions
-import SimRNG 
-import SimClasses
+import sim_engine.SimFunctions as SimFunctions
+import sim_engine.SimRNG as SimRNG 
+import sim_engine.SimClasses as SimClasses
 import pandas
 import numpy as np
 import matplotlib.pyplot as plt
